@@ -1,0 +1,22 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="RibbonLoaded">
+  <ribbon>
+    <tabs>
+      <tab id="EZOfficeTab" label="EZOffice">
+        <group id="EZOfficeView" label="视图">
+          <toggleButton id="EZOfficeScroll" getLabel="GetScrollLabel" getPressed="GetScrollEnabled"
+                        onAction="SetScrollEnabled" screentip="Shift + 滚轮"
+                        supertip="将鼠标放在编辑区，按住 Shift 滚动滚轮。向上往左，向下往右。" />
+        </group>
+        <group id="EZOfficeSave" label="本地保存">
+          <toggleButton id="EZOfficeAutoSave" label="自动保存" getPressed="GetAutoSaveEnabled"
+                        onAction="SetAutoSaveEnabled" screentip="定时保存原文件"
+                        supertip="定时保存已命名且有改动的本地文件。新文件请先按 Ctrl+S 保存到本地。" />
+          <editBox id="EZOfficeInterval" label="间隔（分钟）" sizeString="00000" maxLength="3"
+                   getText="GetInterval" onChange="SetInterval" screentip="自动保存间隔"
+                   supertip="输入 1–120 之间的整数，按 Enter 应用。" />
+          <labelControl id="EZOfficeSaveStatus" getLabel="GetSaveStatus" />
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
