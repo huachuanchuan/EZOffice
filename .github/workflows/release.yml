@@ -1,0 +1,35 @@
+name: Publish EZOffice release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-2022
+    steps:
+      - name: Check out the tagged source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Build the installation package
+        shell: powershell
+        run: .\Build.ps1
+
+      - name: Publish the package
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $notes = @'
+          EZOffice 为 Windows 桌面版 Word、Excel 和 PowerPoint 提供 Shift + 滚轮横向滚动和本地定时保存。
+
+          下载 `EZOffice.zip`，关闭三个 Office 应用，解压后双击 `Install.cmd`。打开文件后，可在 **EZOffice** 功能区分别设置两个开关及 1–120 分钟的保存间隔。
+          '@
+          gh release create $env:GITHUB_REF_NAME .\dist\EZOffice.zip --verify-tag --title "EZOffice $env:GITHUB_REF_NAME" --notes $notes
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
